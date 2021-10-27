@@ -10,7 +10,7 @@ import (
 )
 
 func renderWelcome(responseWriter http.ResponseWriter, request *http.Request) {
-	htmlTemplate := template.Must(template.ParseFiles("template/welcome.html"))
+	htmlTemplate := template.Must(template.ParseFiles("../template/welcome.html"))
 	htmlTemplate.Execute(responseWriter, Content{Welcoming: "hey hey"})
 }
 
@@ -20,12 +20,20 @@ func main() {
 	fmt.Printf("Starting Database connection! \n")
 
 	// Create database handle and check if driver is present
-	db, _ := sql.Open("mysql", "127.0.0.1:3306")
+	db, err := sql.Open("mysql", "root:pw@tcp(127.0.0.1:3306)/mysql")
+	if err != nil {
+		panic(err.Error())
+	}
 	defer db.Close()
 
 	//Connect to db and check version
 	version := ""
-	db.QueryRow("SELECT VERSION()").Scan(&version)
+	row := db.QueryRow("SELECT @@version as version;")
+	if row.Err() != nil {
+		panic(row.Err())
+	}
+
+	row.Scan(&version)
 	fmt.Printf("Connected to: %s", version)
 
 	//Webserver
