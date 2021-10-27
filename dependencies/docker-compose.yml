@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  database:
+    container_name: db
+    image: mariadb
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: pw
+    volumes:
+      - "./schema.sql:/docker-entrypoint-initdb.d/1.sql"
+
+  adminer:
+    container_name: dbui
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
