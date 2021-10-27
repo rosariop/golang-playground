@@ -20,7 +20,7 @@ func main() {
 	fmt.Printf("Starting Database connection! \n")
 
 	// Create database handle and check if driver is present
-	db, err := sql.Open("mysql", "root:pw@tcp(127.0.0.1:3306)/mysql")
+	db, err := sql.Open("mysql", "root:pw@tcp(127.0.0.1:3306)/golang")
 	if err != nil {
 		panic(err.Error())
 	}
